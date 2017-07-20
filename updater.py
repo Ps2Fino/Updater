@@ -96,8 +96,11 @@ class App(Tk):
         else:
             os.mkdir(os.path.join(self.project_root, 'bin'))
             os.chdir(os.path.join(self.project_root, 'bin'))
-            call(['cmake', build_project.UPDATER_CMAKE_ARGS, '..'])
-            call(['cmake', '--build', '.'])
+            rc = call(['cmake', build_project.UPDATER_CMAKE_ARGS, '..'])
+            if rc != 0:
+                self.log_message(message='Project is missing a CMakeLists.txt file. Contact the package maintainer')
+            else:
+                call(['cmake', '--build', '.'])
 
         self.log_message('Project built!')
 
