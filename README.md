@@ -10,6 +10,7 @@ A build utility/package manager that presents a GUI for easy, cross platform ins
 I recommend installing python from the official python distribution.
 Homebrew installations don't seem to work very well.
 Another issue is a script to automatically setup a project in the correct directory format for future projects to be added.
+Also, see the issues with OSX Sierra and pyinstaller [here](https://github.com/pyinstaller/pyinstaller/issues/1350).
 
 ## Missing features
 - A HTTP service for querying available projects hosted on github.bath.ac.uk
