@@ -28,8 +28,13 @@ class App(Tk):
     	self.init_gui()
 
     def init_vars(self):
-    	self.project_titles = ['Spatiotemporal-Study']
-    	self.project_urls = {self.project_titles[0]: "https://github.bath.ac.uk/djf32/spatiotemporal_study.git"}
+
+        self.project_table = 
+        {
+            'Spatiotemporal-Study': 'https://github.bath.ac.uk/djf32/spatiotemporal_study.git',
+            'Updater': 'https://github.bath.ac.uk/djf32/Updater.git'
+        }
+        self.project_titles = sorted(self.project_table.keys()) # Get a sorted list of the keys
     	self.dir_name = 'C:\\'
 
         # Set the logger      
@@ -112,7 +117,8 @@ class App(Tk):
 
     def download_project(self):
         self.log_message(message='Downloading the software...')
-        call(['git', '-C', self.project_root, 'clone', self.project_urls[self.project_titles_var.get()], self.project_titles_var.get()]) # Clone the project from the remote repo
+        project_url = self.project_urls[self.project_titles_var.get()]
+        call(['git', '-C', self.project_root, 'clone', self.project_table[self.project_titles_var.get()], self.project_titles_var.get()]) # Clone the project from the remote repo
         call(['git', '-C', self.project_root, 'checkout', 'master']) # Checkout the master branch
         self.project_root = os.path.join(self.project_root, self.project_titles_var.get()) # Update the directory name to reflect the downloaded package
         self.log_message('Software downloaded!')
