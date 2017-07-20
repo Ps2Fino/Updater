@@ -3,6 +3,7 @@ A build utility/package manager that presents a GUI for easy, cross platform ins
 
 ## Dependencies
 - Pyinstaller
+- py2app
 - Tkinter
 - Python 2.7
 
@@ -11,6 +12,8 @@ I recommend installing python from the official python distribution.
 Homebrew installations don't seem to work very well.
 Another issue is a script to automatically setup a project in the correct directory format for future projects to be added.
 Also, see the issues with OSX Sierra and pyinstaller [here](https://github.com/pyinstaller/pyinstaller/issues/1350).
+The fix for this is to actually just use py2app instead, which seems to create a standalone executable just fine.
+Instructions for using py2app are available [here](https://py2app.readthedocs.io/en/latest/tutorial.html#create-a-setup-py-file)
 
 ## Missing features
 - A HTTP service for querying available projects hosted on github.bath.ac.uk
