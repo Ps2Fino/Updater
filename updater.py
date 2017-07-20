@@ -131,10 +131,11 @@ class App(Tk):
 
     def download_project(self):
         self.log_message(message='Downloading the software...')
-        project_url = self.project_urls[self.project_titles_var.get()]
-        call(['git', '-C', self.project_root, 'clone', self.project_table[self.project_titles_var.get()], self.project_titles_var.get()]) # Clone the project from the remote repo
-        call(['git', '-C', self.project_root, 'checkout', self.branches_var.get()]) # Checkout the branch
+        project_url = self.project_table[self.project_titles_var.get()]
+        call(['git', '-C', self.project_root, 'clone', project_url, self.project_titles_var.get()]) # Clone the project from the remote repo
+        
         self.project_root = os.path.join(self.project_root, self.project_titles_var.get()) # Update the directory name to reflect the downloaded package
+        call(['git', '-C', self.project_root, 'checkout', self.branches_var.get()]) # Checkout the branch
         self.log_message('Software downloaded!')
 
     def do_task(self):
