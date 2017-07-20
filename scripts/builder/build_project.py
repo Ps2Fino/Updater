@@ -4,6 +4,12 @@
 # @author Daniel J. Finnegan
 # @date July 2017
 
-def build_project(project_root):
+UPDATER_CMAKE_ARGS = [] # Required CMake arguments for Updater
+UPDATER_BUILD_CUSTOM = True # Whether or not this project has a custom build module
+
+def build_full_package(project_root):
 	os.chdir(project_root) # Move back up to the root directory
 	call(['pyinstaller', 'updater.spec']) # Just ask pyinstaller to build us again
+
+#######################################################
+
