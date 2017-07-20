@@ -32,7 +32,8 @@ class App(Tk):
         self.project_table = 
         {
             'Spatiotemporal-Study': 'https://github.bath.ac.uk/djf32/spatiotemporal_study.git',
-            'Updater': 'https://github.bath.ac.uk/djf32/Updater.git'
+            'Updater': 'https://github.bath.ac.uk/djf32/Updater.git',
+            'Test': 'https://github.bath.ac.uk/djf32/Test.git'
         }
         self.project_titles = sorted(self.project_table.keys()) # Get a sorted list of the keys
     	self.dir_name = 'C:\\'
