@@ -185,7 +185,7 @@ class App(Tk):
 
 if __name__ == '__main__':
 	root = Tk()
-	root.title('Experiment Updater')
+	root.title('Experiment Updater (Testing branch)')
 	app = App(root)
 	root.mainloop()
 	# root.destroy()
