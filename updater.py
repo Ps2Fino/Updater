@@ -28,15 +28,15 @@ class App(Tk):
     	self.init_gui()
 
     def init_vars(self):
-
-        self.project_table = 
-        {
+        self.project_table = {
             'Spatiotemporal-Study': 'https://github.bath.ac.uk/djf32/spatiotemporal_study.git',
             'Updater': 'https://github.bath.ac.uk/djf32/Updater.git',
             'Test': 'https://github.bath.ac.uk/djf32/Test.git'
         }
         self.project_titles = sorted(self.project_table.keys()) # Get a sorted list of the keys
-    	self.dir_name = 'C:\\'
+
+        self.branches = ['master', 'testing']
+        self.project_root = 'C:\\'
 
         # Set the logger      
         if sys.platform == 'darwin':
@@ -56,35 +56,45 @@ class App(Tk):
     	self.project_titles_var = StringVar()
     	self.project_titles_var.set(self.project_titles[0])
 
+        self.branches_var = StringVar()
+        self.branches_var.set(self.branches[0])
+
     def init_gui(self):
     	# Option box for selecting the project to install
-    	self.project_label = Label(self.frame, text='Project to Install or Update:')
-    	self.projects_options = OptionMenu(self.frame, self.project_titles_var, self.project_titles)
+    	self.project_label = Label(self.frame, text='Branch to Install or Update:')
+    	self.projects_options = OptionMenu(self.frame, self.project_titles_var, *self.project_titles)
     	self.project_label.grid(column=0, row=0, sticky='W')
     	self.projects_options.grid(column=1, columnspan=3, row = 0, sticky='W')
+
+        # Option box for selecting the project to install
+        self.project_label = Label(self.frame, text='Project to Install or Update:')
+        self.projects_options = OptionMenu(self.frame, self.branches_var, *self.branches)
+        self.project_label.grid(column=0, row=1, sticky='W')
+        self.projects_options.grid(column=1, columnspan=3, row = 1, sticky='W')
 
     	# Entry for specifying the directory to install the project
     	# Complete with side label and action button
     	self.directory_label = Label(self.frame, text='Project Directory to Install or Update:')
-    	self.directory_entry = Entry(self.frame, textvariable=self.dir_text, width=50)
+    	self.directory_entry = Entry(self.frame, textvariable=self.project_root_text, width=50)
     	self.set_directory_button = Button(self.frame, text="Set Directory", command=self.find_dir)
-    	self.directory_label.grid(column=0, row=1, sticky='EW')
-    	self.directory_entry.grid(column=1, columnspan=2, row=1, sticky='EW')
-    	self.set_directory_button.grid(column=3, row=1, sticky='EW')
+    	self.directory_label.grid(column=0, row=2, sticky='EW')
+    	self.directory_entry.grid(column=1, columnspan=2, row=2, sticky='EW')
+    	self.set_directory_button.grid(column=3, row=2, sticky='EW')
 
     	# Action button for updating
     	# self.update_button = Button(self.frame, text='Update', fg='red', command=self.frame.quit)
     	self.update_button = Button(self.frame, text='Update', fg='red', command=self.do_task)
-    	self.update_button.grid(column=0, row=2, sticky='EW')
+    	self.update_button.grid(column=0, row=3, sticky='EW')
 
         # Text box for log output
         self.log = Text(self.frame, height=20, takefocus=0)
-        self.log.grid(column=0, columnspan=4, row=3, sticky='EW')
+        self.log.grid(column=0, columnspan=4, row=4, sticky='EW')
 
     def find_dir(self):
     	self.project_root = tkFileDialog.askdirectory()
     	if self.project_root is None:
             return
+
     	self.project_root_text.set(self.project_root)
 
     def build_project(self):
@@ -100,9 +110,12 @@ class App(Tk):
         if build_project.UPDATER_BUILD_CUSTOM:
             build_project.build_full_package(self.project_root) # Pass in the root directory 
         else:
+            if os.path.isdir(os.path.join(self.project_root, 'bin')):
+                shutil.rmtree(os.path.join(self.project_root, 'bin'))
+
             os.mkdir(os.path.join(self.project_root, 'bin'))
             os.chdir(os.path.join(self.project_root, 'bin'))
-            rc = call(['cmake', build_project.UPDATER_CMAKE_ARGS, '..'])
+            rc = call(['cmake'] + build_project.UPDATER_CMAKE_ARGS + ['..'])
             if rc != 0:
                 self.log_message(message='Project is missing a CMakeLists.txt file. Contact the package maintainer')
             else:
@@ -112,15 +125,15 @@ class App(Tk):
 
     def update_project(self):
         self.log_message(message='Updating the software package...')
-        call(['git', '-C', self.project_root, 'checkout', 'master']) # Checkout the master branch
-        call(['git', '-C', self.project_root, 'pull', 'origin', 'master']) # Pull the changes made in the project from the repo
+        call(['git', '-C', self.project_root, 'checkout', self.branches_var.get()]) # Checkout the master branch
+        call(['git', '-C', self.project_root, 'pull', 'origin', self.branches_var.get()]) # Pull the changes made in the project from the repo
         self.log_message('Software updated!')
 
     def download_project(self):
         self.log_message(message='Downloading the software...')
         project_url = self.project_urls[self.project_titles_var.get()]
         call(['git', '-C', self.project_root, 'clone', self.project_table[self.project_titles_var.get()], self.project_titles_var.get()]) # Clone the project from the remote repo
-        call(['git', '-C', self.project_root, 'checkout', 'master']) # Checkout the master branch
+        call(['git', '-C', self.project_root, 'checkout', self.branches_var.get()]) # Checkout the branch
         self.project_root = os.path.join(self.project_root, self.project_titles_var.get()) # Update the directory name to reflect the downloaded package
         self.log_message('Software downloaded!')
 
