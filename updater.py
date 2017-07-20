@@ -44,8 +44,8 @@ class App(Tk):
         self.logger.setLevel(logging.INFO)
 
     def init_controls(self):
-    	self.dir_text = StringVar()
-    	self.dir_text.set(self.dir_name)
+    	self.project_root_text = StringVar()
+    	self.project_root_text.set(self.project_root)
 
     	self.project_titles_var = StringVar()
     	self.project_titles_var.set(self.project_titles[0])
@@ -76,35 +76,42 @@ class App(Tk):
         self.log.grid(column=0, columnspan=4, row=3, sticky='EW')
 
     def find_dir(self):
-    	self.dir_name = tkFileDialog.askdirectory()
-    	if self.dir_name is None:
+    	self.project_root = tkFileDialog.askdirectory()
+    	if self.project_root is None:
             return
-    	self.dir_text.set(self.dir_name)
+    	self.project_root_text.set(self.project_root)
 
     def build_project(self):
         self.log_message('Building the software package...')
-        os.chdir(self.dir_name)
+        os.chdir(self.project_root) # Move to the root of the directory
 
         self.log_message('Building the project...')
         sys.path.append(os.getcwd() + '/scripts/')
 
-        # Import the build script as a python module and then build it 
+        # Import the build script as a python module and then build it
+        # If no custom build operation is specified, then make a standard call to cmake
         from builder import build_project
-        build_project.build_full_package()
+        if build_project.UPDATER_BUILD_CUSTOM:
+            build_project.build_full_package(self.project_root) # Pass in the root directory 
+        else:
+            os.mkdir(os.path.join(self.project_root, 'bin'))
+            os.chdir(os.path.join(self.project_root, 'bin'))
+            call(['cmake', build_project.UPDATER_CMAKE_ARGS, '..'])
+            call(['cmake', '--build', '.'])
 
         self.log_message('Project built!')
 
     def update_project(self):
         self.log_message(message='Updating the software package...')
-        call(['git', '-C', self.dir_name, 'checkout', 'master']) # Checkout the master branch
-        call(['git', '-C', self.dir_name, 'pull', 'origin', 'master']) # Pull the changes made in the project from the repo
+        call(['git', '-C', self.project_root, 'checkout', 'master']) # Checkout the master branch
+        call(['git', '-C', self.project_root, 'pull', 'origin', 'master']) # Pull the changes made in the project from the repo
         self.log_message('Software updated!')
 
     def download_project(self):
         self.log_message(message='Downloading the software...')
-        call(['git', '-C', self.dir_name, 'clone', self.project_urls[self.project_titles_var.get()], self.project_titles_var.get()]) # Clone the project from the remote repo
-        call(['git', '-C', self.dir_name, 'checkout', 'master']) # Checkout the master branch
-        self.dir_name = os.path.join(self.dir_name, self.project_titles_var.get()) # Update the directory name to reflect the downloaded package
+        call(['git', '-C', self.project_root, 'clone', self.project_urls[self.project_titles_var.get()], self.project_titles_var.get()]) # Clone the project from the remote repo
+        call(['git', '-C', self.project_root, 'checkout', 'master']) # Checkout the master branch
+        self.project_root = os.path.join(self.project_root, self.project_titles_var.get()) # Update the directory name to reflect the downloaded package
         self.log_message('Software downloaded!')
 
     def do_task(self):
@@ -119,13 +126,13 @@ class App(Tk):
             self.log_message(message='Platform unsupported. Aborting')
             return
 
-    	rc = call(['git', '-C', self.dir_name, 'status']) # Run git status
+    	rc = call(['git', '-C', self.project_root, 'status']) # Run git status
     	if rc == 0:
             def update_in_thread():
                 self.update_button.config(state=DISABLED)
 
                 self.update_project()
-                self.build_project()
+                self.build_project() # Pass in the project root folder
 
                 self.update_button.config(state=ACTIVE)
                 return
