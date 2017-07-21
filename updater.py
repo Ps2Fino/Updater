@@ -102,7 +102,7 @@ class ProjectGenerator():
             '\n'
             'int main(int argc, char **argv)\n'
             '{\n'
-            '\tstd::cout << \"Hello World\\n\" << std::endl;\n'
+            '\tstd::cout << \"Hello World\" << std::endl;\n'
             '\treturn 0;\n'
             '}\n'
         )
