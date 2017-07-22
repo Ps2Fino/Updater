@@ -48,7 +48,7 @@ class ProjectGenerator():
             'add_executable (\n'
             '\tmain\n'
             '\t${SOURCE_FILES}\n'
-            ')'
+            ')\n'
         )
 
         with open(os.path.join(self.project_root, 'CMakeLists.txt'), 'w') as cmake_lists:
@@ -57,7 +57,7 @@ class ProjectGenerator():
     def write_readme_file(self):
         file_contents = (
             '# ' + os.path.basename(self.project_root) +'\n'
-            'Put your README information here'
+            'Put your README information here\n'
         )
 
         with open(os.path.join(self.project_root, 'README.md'), 'w') as readme_file:
@@ -85,7 +85,7 @@ class ProjectGenerator():
             '\tos.chdir(os.path.join(project_root, \'bin\'))\n'
             '\tcall([\'cmake\'] + UPDATER_CMAKE_ARGS + [\'..\'])\n'
             '\tcall([\'cmake\', \'--build\', \'.\'])\n'
-            '\n####################################################################'
+            '\n####################################################################\n'
         )
 
         with open(os.path.join(self.project_root, 'scripts', 'builder', 'build_project.py'), 'w') as build_module:
@@ -115,7 +115,7 @@ class ProjectGenerator():
             '# __init__ file for module\n'
             '# @author ' + author_name + '\n'
             '\n'
-            '__all__ = [\'build_project\']'
+            '__all__ = [\'build_project\']\n'
         )
 
         with open(os.path.join(self.project_root, 'scripts', 'builder', '__init__.py'), 'w') as init_module:
