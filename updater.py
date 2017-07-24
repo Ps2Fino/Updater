@@ -148,6 +148,12 @@ class App(Tk):
     def __init__(self, master):
     	self.frame = Frame(master, height=640, width=480)
         self.menu = Menu(master)
+
+        if sys.platform == 'darwin':
+            self.appmenu = Menu(self.menu, name = 'apple') # Some extra fiddling about for OSX
+            self.menu.add_cascade(menu=self.appmenu)
+            self.appmenu.add_command(label='About Updater')
+
     	self.initialize()
 
     def initialize(self):
@@ -186,13 +192,19 @@ class App(Tk):
         self.branches_var.set(self.branches[0])
 
     def init_menu(self):
-        self.menu.add_command(label='Quit', command=self.frame.quit)
-        self.menu.add_command(label='Load Projects File', command=self.load_projects)
+        if sys.platform == 'darwin': # We need to use the appmenu object for OSX applications
+            self.appmenu.add_command(label='Quit', command=self.frame.quit)
+            self.appmenu.add_command(label='Load Projects File', command=self.load_projects)
+            self.appmenu.add_separator()
+        else:
+            self.menu.add_command(label='Quit', command=self.frame.quit)
+            self.menu.add_command(label='Load Projects File', command=self.load_projects)
+
         root.config(menu=self.menu)
 
     def load_projects(self, *args):
         projects_file = tkFileDialog.askopenfilename(filetypes=[('project files', 'txt')], parent=self.frame)
-        if projects_file is None:
+        if projects_file is None or projects_file == '':
             return
 
         self.project_table = {} # clear the existing table
