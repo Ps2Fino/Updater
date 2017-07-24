@@ -2,10 +2,13 @@ from subprocess import call
 import os, sys
 from os import path
 from Tkinter import *
+import Tkinter
 from threading import *
 import tkFileDialog
+import tkMessageBox
 import logging
 from logging import handlers
+import csv
 
 ## This file implements the project downloadeer.
 ## It is used for pulling and building all of my software
@@ -144,20 +147,24 @@ class App(Tk):
 
     def __init__(self, master):
     	self.frame = Frame(master, height=640, width=480)
+        self.menu = Menu(master)
     	self.initialize()
 
     def initialize(self):
     	self.frame.grid()
     	self.init_vars()
     	self.init_controls()
+        self.init_menu()
     	self.init_gui()
 
     def init_vars(self):
-        self.project_table = {
-            'Spatiotemporal-Study': 'https://github.bath.ac.uk/djf32/spatiotemporal_study.git',
-            'Updater': 'https://github.bath.ac.uk/djf32/Updater.git',
-            'Test': 'https://github.bath.ac.uk/djf32/Test.git'
-        }
+        # self.project_table = {
+        #     'Spatiotemporal-Study': 'https://github.bath.ac.uk/djf32/spatiotemporal_study.git',
+        #     'Updater': 'https://github.bath.ac.uk/djf32/Updater.git',
+        #     'Test': 'https://github.bath.ac.uk/djf32/Test.git'
+        # }
+        # self.project_titles = sorted(self.project_table.keys()) # Get a sorted list of the keys
+        self.project_table = {'': ''} # Empty table
         self.project_titles = sorted(self.project_table.keys()) # Get a sorted list of the keys
 
         self.branches = ['master', 'testing']
@@ -184,18 +191,41 @@ class App(Tk):
         self.branches_var = StringVar()
         self.branches_var.set(self.branches[0])
 
+    def init_menu(self):
+        self.menu.add_command(label='Quit', command=self.frame.quit)
+        self.menu.add_command(label='Load Projects File', command=self.load_projects)
+        root.config(menu=self.menu)
+
+    def load_projects(self, *args):
+        projects_file = tkFileDialog.askopenfilename(filetypes=[('project files', 'txt')], parent=self.frame)
+        if projects_file is None:
+            return
+
+        self.project_table = {} # clear the existing table
+        with open(projects_file) as proj_file: # read in the projects from the file
+            reader = csv.DictReader(proj_file)
+            for row in reader:
+                self.project_table[row['Project Name']] = row['Project URL']
+
+        self.project_titles = sorted(self.project_table.keys()) # Get a sorted list of the keys
+        self.project_titles_var.set(self.project_titles[0])
+        menu = self.projects_options['menu']
+        menu.delete(0, 'end')
+        for project in self.project_titles: # Repopulate
+            menu.add_command(label=project, command=lambda title=project: self.project_titles_var.set(title))
+
     def init_gui(self):
     	# Option box for selecting the project to install
     	self.project_label = Label(self.frame, text='Branch to Install or Update:')
-    	self.projects_options = OptionMenu(self.frame, self.project_titles_var, *self.project_titles)
+        self.projects_options = OptionMenu(self.frame, self.project_titles_var, '')
     	self.project_label.grid(column=0, row=0, sticky='W')
     	self.projects_options.grid(column=1, columnspan=3, row = 0, sticky='W')
 
         # Option box for selecting the project to install
         self.project_label = Label(self.frame, text='Project to Install or Update:')
-        self.projects_options = OptionMenu(self.frame, self.branches_var, *self.branches)
+        self.project_branches = OptionMenu(self.frame, self.branches_var, *self.branches)
         self.project_label.grid(column=0, row=1, sticky='W')
-        self.projects_options.grid(column=1, columnspan=3, row = 1, sticky='W')
+        self.project_branches.grid(column=1, columnspan=3, row = 1, sticky='W')
 
     	# Entry for specifying the directory to install the project
     	# Complete with side label and action button
@@ -265,6 +295,11 @@ class App(Tk):
         self.log_message('Software downloaded!')
 
     def do_task(self):
+
+        # Check if the current selected project is empty
+        if self.project_titles_var.get() == '':
+            tkMessageBox.showerror(title='Missing Project', message='Please load the projects list file')
+            return
 
         # Add paths
         if sys.platform == 'darwin':
