@@ -158,12 +158,6 @@ class App(Tk):
     	self.init_gui()
 
     def init_vars(self):
-        # self.project_table = {
-        #     'Spatiotemporal-Study': 'https://github.bath.ac.uk/djf32/spatiotemporal_study.git',
-        #     'Updater': 'https://github.bath.ac.uk/djf32/Updater.git',
-        #     'Test': 'https://github.bath.ac.uk/djf32/Test.git'
-        # }
-        # self.project_titles = sorted(self.project_table.keys()) # Get a sorted list of the keys
         self.project_table = {'': ''} # Empty table
         self.project_titles = sorted(self.project_table.keys()) # Get a sorted list of the keys
 
@@ -206,6 +200,8 @@ class App(Tk):
             reader = csv.DictReader(proj_file)
             for row in reader:
                 self.project_table[row['Project Name']] = row['Project URL']
+
+        # TODO: Catch errors here in the file reader
 
         self.project_titles = sorted(self.project_table.keys()) # Get a sorted list of the keys
         self.project_titles_var.set(self.project_titles[0])
