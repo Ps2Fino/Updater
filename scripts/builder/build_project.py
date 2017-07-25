@@ -4,7 +4,7 @@
 # @author Daniel J. Finnegan
 # @date July 2017
 
-import os
+import os, sys
 from subprocess import call
 
 UPDATER_CMAKE_ARGS = [] # Required CMake arguments for Updater
