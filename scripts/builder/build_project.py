@@ -12,7 +12,11 @@ UPDATER_BUILD_CUSTOM = True # Whether or not this project has a custom build mod
 
 def build_full_package(project_root):
 	os.chdir(project_root) # Move back up to the root directory
-	call(['pyinstaller', 'updater.spec']) # Just ask pyinstaller to build us again
+
+	if sys.platform == 'darwin': # Use py2app on OSX
+		call(['python', 'setup.py', 'py2app'])
+	else:
+		call(['pyinstaller', 'updater.spec']) # Use pyinstaller on Windows
 
 #######################################################
 
