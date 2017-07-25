@@ -3,8 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['updater.py', 'updater.spec'],
-             pathex=['/Users/Dan/Documents/Spatiotemporal-Experiment/utils/updater'],
+a = Analysis(['updater.py', 'updater.spec'],,
              hiddenimports=['argparse', 'shutil', 'subprocess'],
              binaries=[],
              datas=[],
