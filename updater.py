@@ -28,6 +28,7 @@ class ProjectGenerator():
 
     def initialize(self, proj_root):
         self.project_root = proj_root
+        self.logger = logging.getLogger('updater')
 
     def write_cmake_file(self):
         file_contents = (
