@@ -225,15 +225,15 @@ class App(Tk):
 
     def init_gui(self):
     	# Option box for selecting the project to install
-    	self.project_label = Label(self.frame, text='Branch to Install or Update:')
+        self.project_label = Label(self.frame, text='Project to Install or Update:')
         self.projects_options = OptionMenu(self.frame, self.project_titles_var, '')
     	self.project_label.grid(column=0, row=0, sticky='W')
     	self.projects_options.grid(column=1, columnspan=3, row = 0, sticky='W')
 
         # Option box for selecting the project to install
-        self.project_label = Label(self.frame, text='Project to Install or Update:')
+        self.branch_label = Label(self.frame, text='Branch to Install or Update:')
         self.project_branches = OptionMenu(self.frame, self.branches_var, *self.branches)
-        self.project_label.grid(column=0, row=1, sticky='W')
+        self.branch_label.grid(column=0, row=1, sticky='W')
         self.project_branches.grid(column=1, columnspan=3, row = 1, sticky='W')
 
     	# Entry for specifying the directory to install the project
@@ -290,6 +290,7 @@ class App(Tk):
 
     def update_project(self):
         self.log_message(message='Updating the software package...')
+        call(['git', '-C', self.project_root, 'checkout', '--', '.']) # Clear any local changes
         call(['git', '-C', self.project_root, 'checkout', self.branches_var.get()]) # Checkout the master branch
         call(['git', '-C', self.project_root, 'pull', 'origin', self.branches_var.get()]) # Pull the changes made in the project from the repo
         self.log_message('Software updated!')
