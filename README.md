@@ -14,6 +14,8 @@ Another issue is a script to automatically setup a project in the correct direct
 Also, see the issues with OSX Sierra and pyinstaller [here](https://github.com/pyinstaller/pyinstaller/issues/1350).
 The fix for this is to actually just use py2app instead, which seems to create a standalone executable just fine.
 Instructions for using py2app are available [here](https://py2app.readthedocs.io/en/latest/tutorial.html#create-a-setup-py-file)
+Yet another issue is the recursive nature of updater; currently updater cannot be used to build itself.
+This is likely an issue with paths, namely the binary not having the relevant directories in its own path at the build time of updater.
 
 ## Missing features
 - A HTTP service for querying available projects hosted on github.bath.ac.uk
