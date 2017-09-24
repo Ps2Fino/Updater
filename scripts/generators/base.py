@@ -8,9 +8,12 @@ import os
 from os import path
 import logging
 from logging import handlers
+import re
 
-version_number = 1.0 # Updater version number
-author_name = 'Daniel J. Finnegan'
+template_keys = {
+    'version_number': 1.0,
+    'author_name': 'Daniel J. Finnegan'
+}
 
 class ProjectGenerator():
 
@@ -20,9 +23,24 @@ class ProjectGenerator():
     def initialize(self, proj_root):
         self.project_root = proj_root
         self.logger = logging.getLogger('updater_application')
+        self.template_name = 'base.txt'
 
     def write_cmake_file(self):
-        pass
+        # pass
+        with open (os.path.join(os.getcwd(), 'templates', self.template_name)) as f:
+            lines = f.readlines()
+
+        def replace_key_vals(match):
+            for key, value in template_keys.iteritems():
+                if key in match.string():
+                    return value
+
+        regex = re.compile(r">>>>>{(\w+)}")
+        for line in lines:
+            line = regex.sub(replace_key_vals, line)
+
+        with open(os.path.join(self.project_root, 'CMakeLists.txt'), 'w') as cmake_file:
+            cmake_file.write(lines)
 
     def write_readme_file(self):
         file_contents = (
