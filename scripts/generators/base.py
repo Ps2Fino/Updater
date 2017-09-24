@@ -29,7 +29,6 @@ class ProjectGenerator():
             lines = f.readlines()
 
         def replace_key_vals(match):
-            print match.string
             for key, value in self.template_keys.iteritems():
                 if key in match.string:
                     return value
