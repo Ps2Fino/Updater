@@ -358,7 +358,16 @@ class App(Tk):
             self.update_button.config(state=DISABLED)
             self.create_button.config(state=DISABLED)
 
-            project_generator = ProjectGenerator(self.project_root_text.get())
+            '''         
+            if self.generators_var.get() == 'Unity':
+                project_generator = unity.UnityGenerator(self.project_root_text.get())
+            # elif self.generators_var.get() == '<insert_new_generator_here>':
+            #     project_generator = <New>Generator(self.project_root_text.get())
+            else:
+                project_generator = cpp.CppGenerator(self.project_root_text.get())
+            '''         
+            project_generator = base.ProjectGenerator(self.project_root_text.get())
+
             self.log_message(message='Generating the project...')
             rc = project_generator.generate_project()
             if rc == 0:
