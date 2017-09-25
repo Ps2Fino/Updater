@@ -18,6 +18,8 @@ project (
 	>>>>>{projname}
 	VERSION
 		1.0
+	LANGUAGES
+		NONE
 )
 
 set (
