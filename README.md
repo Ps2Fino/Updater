@@ -27,3 +27,4 @@ This would get a little cumbersome though, so best to look for an alternative so
 ## TODO
 - Modify the template engine to actually load the keys etc. from a config file already placed in the target directory. Then the project chooser can choose a directory containing a config file, and build from there. It will create a project if a CMakeLists.txt file is not found, and will update a project if one is found
 - I need to fix the experience of the unity template. Unity always creates a new folder for a project with the name of the project as the root directory, rather than just using the folder chosen by the user. I need to get Unity to choose the current existing folder chosen
+- At the moment, the template header is removed simply by removing the first 7 lines from the template. This should be fixed to accommodate headers of arbitrary length

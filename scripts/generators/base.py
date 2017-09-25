@@ -28,6 +28,9 @@ class ProjectGenerator():
         with open (os.path.join(os.getcwd(), 'templates', self.template_name)) as f:
             lines = f.readlines()
 
+        # Delete the header from the template file
+        del lines[0:7]
+
         def replace_key_vals(match):
             for key, value in self.template_keys.iteritems():
                 if key in match.string:
