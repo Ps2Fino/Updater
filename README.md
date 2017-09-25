@@ -22,3 +22,7 @@ This is likely an issue with paths, namely the binary not having the relevant di
 - A method for ensuring all dependencies are accounted for.
 This might take the form of simply maintaing the script to account for all dependencies that future projects need.
 This would get a little cumbersome though, so best to look for an alternative solution
+
+
+## TODO
+- Modify the template engine to actually load the keys etc. from a config file already placed in the target directory. Then the project chooser can choose a directory containing a config file, and build from there. It will create a project if a CMakeLists.txt file is not found, and will update a project if one is found

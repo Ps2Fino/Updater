@@ -252,6 +252,7 @@ class App(Tk):
             if self.generators_var.get() == 'Unity':
                 project_generator = unity.UnityGenerator(self.project_root_text.get())
                 project_generator.template_name = 'unity.txt'
+                project_generator.template_keys['projname'] =  'Unity Updater Project'
                 project_generator.template_keys['appname'] =  'DanDan\'s Application'
             elif self.generators_var.get() == 'C++':
                 project_generator = cpp.CppGenerator(self.project_root_text.get())
@@ -261,8 +262,6 @@ class App(Tk):
             #     project_generator = <New>Generator(self.project_root_text.get())
             else:
                 project_generator = base.ProjectGenerator(self.project_root_text.get())
-
-            # project_generator = base.ProjectGenerator(self.project_root_text.get())
 
             self.log_message(message='Generating the project...')
             rc = project_generator.generate_project()
