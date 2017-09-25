@@ -51,7 +51,7 @@ add_custom_target (
 		-batchmode
 		-projectPath ${CMAKE_SOURCE_DIR}/Unity
 		-buildWindows64Player
-		${CMAKE_SOURCE_DIR}/build/${EXPERIMENT_APP}.exe
+		${CMAKE_SOURCE_DIR}/build/${AUTO_APP_NAME}.exe
 	COMMENT
 		"Building ${AUTO_APP_NAME}..."		
 )
