@@ -21,7 +21,9 @@ class ProjectGenerator(object):
         self.template_name = 'base.txt'
         self.template_keys = {
            'version_number': '1.0',
-            'author_name': 'Daniel J. Finnegan'
+            'author_name': 'Daniel J. Finnegan',
+            'insaller_name': 'My-Program',
+            'company_name': 'Lancophone'
         }
 
     def write_cmake_file(self):
@@ -46,6 +48,24 @@ class ProjectGenerator(object):
         with open(os.path.join(self.project_root, 'CMakeLists.txt'), 'w') as cmake_file:
             cmake_file.writelines(templ)
 
+    def write_installer_file(self):
+        # Delete the header from the template file
+        def remove_and_replace(lines):
+            del lines[0:7]
+            def replace_key_vals(match):
+                for key, value in self.template_keys.iteritems():
+                    if key in match.string:
+                        return value
+            regex = re.compile(r">>>>>{(\w+)}")
+            lines = [regex.sub(replace_key_vals, line) for line in lines]
+            return lines
+
+        with open (os.path.join(os.getcwd(), 'templates', 'installer.txt')) as f:
+            base = f.readlines()
+        base = remove_and_replace(base)
+        with open(os.path.join(self.project_root, 'scripts', 'installer.nsi'), 'w') as installer_file:
+            installer_file.writelines(base)
+
     def write_readme_file(self):
         file_contents = (
             '# ' + os.path.basename(self.project_root) +'\n'
@@ -65,8 +85,8 @@ class ProjectGenerator(object):
             'import os\n'
             'from subprocess import call\n'
             '\n'
-            'UPDATER_CMAKE_ARGS = [] # Required CMake arguments for Updater\n'
-            'UPDATER_BUILD_CUSTOM = False # Set this to True if your project has a custom build function\n'
+            'UPDATER_CMAKE_ARGS = [BUILD_INSTALLER=ON] # Required CMake arguments for Updater\n'
+            'UPDATER_BUILD_CUSTOM = True # Set this to True if your project has a custom build function\n'
             '\n'
             '# Default implementation just calls cmake\n'
             '# Reimplement as you see fit\n'
@@ -114,6 +134,7 @@ class ProjectGenerator(object):
         self.write_readme_file()
         self.write_build_file()
         self.write_cmake_file()
+        self.write_installer_file()
         self.write_sample_source_file()
         return 0
 

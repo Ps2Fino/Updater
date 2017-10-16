@@ -24,3 +24,33 @@ set (
 		>>>>>{appname}
 )
 
+option (
+	BUILD_INSTALLER
+		"Build the project installer (requires NSIS in the PATH variable)"
+		OFF
+)
+
+if (BUILD_INSTALLER)
+
+set (
+	INSTALLER_NAME
+		>>>>>{installer_name}
+)
+
+# Note that the version number and product name are passed to the NSIS script
+add_custom_target (
+	${INSTALLER_NAME}
+	ALL
+	DEPENDS
+		${AUTO_APP_NAME}
+	COMMAND
+		"C:/Program Files (x86)/NSIS/makensis.exe"
+		"/XOutFile ${CMAKE_SOURCE_DIR}/build/${PROJECT_NAME}_v${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}-Installer.exe"
+		"/X!define PRODUCT_NAME ${PROJECT_NAME}"
+		${CMAKE_SOURCE_DIR}/scripts/installer.nsi
+	COMMENT
+		"Building ${INSTALLER_NAME}..."
+)
+
+endif()
+
