@@ -12,12 +12,10 @@ from logging import handlers
 
 class CppGenerator(base.ProjectGenerator):
 
-    # def __init__(self, proj_root):
-    #     self.initialize(proj_root)
-
-    # def initialize(self, proj_root):
-    #     self.project_root = proj_root
-    #     self.logger = logging.getLogger('updater_application')
+    def __init__(self, proj_root):
+        super(CppGenerator, self).__init__(proj_root)
+        self.template_name = 'cpp.txt'
+        self.template_keys['appname'] =  'DanDan\'s-Application'
 
     def write_sample_source_file(self):
         os.mkdir(os.path.join(self.project_root, 'src'))

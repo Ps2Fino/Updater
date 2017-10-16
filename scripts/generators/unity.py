@@ -13,11 +13,11 @@ import re
 
 class UnityGenerator(base.ProjectGenerator):
 
-    # def __init__(self, proj_root):
-    #     self.initialize(proj_root)
-
-    # def initialize(self, proj_root):
-    #     super(UnityGenerator, self).initialize()
+    def __init__(self, proj_root):
+        super(UnityGenerator, self).__init__(proj_root)
+        self.template_name = 'unity.txt'
+        self.template_keys['projname'] =  'Unity-Updater-Project'
+        self.template_keys['appname'] =  'Unity-Application'
 
     def write_sample_source_file(self):
         os.mkdir(os.path.join(self.project_root, 'Unity'))

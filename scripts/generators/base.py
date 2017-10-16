@@ -10,7 +10,7 @@ import logging
 from logging import handlers
 import re
 
-class ProjectGenerator():
+class ProjectGenerator(object):
 
     def __init__(self, proj_root):
         self.initialize(proj_root)
