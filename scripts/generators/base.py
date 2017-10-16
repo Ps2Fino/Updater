@@ -39,8 +39,16 @@ class ProjectGenerator(object):
         regex = re.compile(r">>>>>{(\w+)}")
         lines = [regex.sub(replace_key_vals, line) for line in lines]
 
+        with open (os.path.join(os.getcwd(), 'templates', 'base.txt')) as f:
+            base = f.readlines()
+
+        del base[0:7]
+        base = [regex.sub(replace_key_vals, line) for line in base]
+
+        templ = base + lines
+
         with open(os.path.join(self.project_root, 'CMakeLists.txt'), 'w') as cmake_file:
-            cmake_file.writelines(lines)
+            cmake_file.writelines(templ)
 
     def write_readme_file(self):
         file_contents = (
