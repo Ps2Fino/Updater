@@ -95,18 +95,22 @@ class ProjectGenerator(object):
 
     def generate_project(self):
         if os.path.isdir(self.project_root):
-            self.logger.info('Project already exists! Aborting...')
-            return 1
+            if os.path.isfile(os.path.join(self.project_root, 'CMakeLists.txt')):
+                self.logger.info('Project already exists! Aborting...')
+                return 1
         else:
             os.mkdir(self.project_root)
-            os.mkdir(os.path.join(self.project_root, 'scripts'))
-            os.mkdir(os.path.join(self.project_root, 'scripts', 'builder'))
 
-            self.write_init_file()
-            self.write_readme_file()
-            self.write_build_file()
-            self.write_cmake_file()
-            self.write_sample_source_file()
-            return 0
+        # Go ahead and create the scripts folder
+        os.mkdir(os.path.join(self.project_root, 'scripts'))
+        os.mkdir(os.path.join(self.project_root, 'scripts', 'builder'))
+
+        # Go ahead and write all the files to the directory
+        self.write_init_file()
+        self.write_readme_file()
+        self.write_build_file()
+        self.write_cmake_file()
+        self.write_sample_source_file()
+        return 0
 
 ###########################################################
