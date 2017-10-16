@@ -25,28 +25,24 @@ class ProjectGenerator(object):
         }
 
     def write_cmake_file(self):
-        with open (os.path.join(os.getcwd(), 'templates', self.template_name)) as f:
-            lines = f.readlines()
-
         # Delete the header from the template file
-        del lines[0:7]
-
-        def replace_key_vals(match):
-            for key, value in self.template_keys.iteritems():
-                if key in match.string:
-                    return value
-
-        regex = re.compile(r">>>>>{(\w+)}")
-        lines = [regex.sub(replace_key_vals, line) for line in lines]
+        def remove_and_replace(lines):
+            del lines[0:7]
+            def replace_key_vals(match):
+                for key, value in self.template_keys.iteritems():
+                    if key in match.string:
+                        return value
+            regex = re.compile(r">>>>>{(\w+)}")
+            lines = [regex.sub(replace_key_vals, line) for line in lines]
+            return lines
 
         with open (os.path.join(os.getcwd(), 'templates', 'base.txt')) as f:
             base = f.readlines()
-
-        del base[0:7]
-        base = [regex.sub(replace_key_vals, line) for line in base]
-
+        base = remove_and_replace(base)
+        with open (os.path.join(os.getcwd(), 'templates', self.template_name)) as f:
+            lines = f.readlines()
+        lines = remove_and_replace(lines)
         templ = base + lines
-
         with open(os.path.join(self.project_root, 'CMakeLists.txt'), 'w') as cmake_file:
             cmake_file.writelines(templ)
 
