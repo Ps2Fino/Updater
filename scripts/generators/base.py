@@ -26,45 +26,41 @@ class ProjectGenerator(object):
             'company_name': 'Lancophone'
         }
 
-    def write_cmake_file(self):
-        # Delete the header from the template file
-        def remove_and_replace(lines):
-            del lines[0:7]
-            def replace_key_vals(match):
-                for key, value in self.template_keys.iteritems():
-                    if key in match.string:
-                        return value
-            regex = re.compile(r">>>>>{(\w+)}")
-            lines = [regex.sub(replace_key_vals, line) for line in lines]
-            return lines
+    def remove_and_replace(self, lines):
+        del lines[0:7]
+        def replace_key_vals(match):
+            for key, value in self.template_keys.iteritems():
+                if key in match.string:
+                    return value
+        regex = re.compile(r">>>>>{(\w+)}")
+        lines = [regex.sub(replace_key_vals, line) for line in lines]
+        return lines
 
+    def write_cmake_file(self):
         with open (os.path.join(os.getcwd(), 'templates', 'base.txt')) as f:
             base = f.readlines()
-        base = remove_and_replace(base)
+        base = self.remove_and_replace(base)
         with open (os.path.join(os.getcwd(), 'templates', self.template_name)) as f:
             lines = f.readlines()
-        lines = remove_and_replace(lines)
+        lines = self.remove_and_replace(lines)
         templ = base + lines
         with open(os.path.join(self.project_root, 'CMakeLists.txt'), 'w') as cmake_file:
             cmake_file.writelines(templ)
 
     def write_installer_file(self):
         # Delete the header from the template file
-        def remove_and_replace(lines):
-            del lines[0:7]
-            def replace_key_vals(match):
-                for key, value in self.template_keys.iteritems():
-                    if key in match.string:
-                        return value
-            regex = re.compile(r">>>>>{(\w+)}")
-            lines = [regex.sub(replace_key_vals, line) for line in lines]
-            return lines
-
-        with open (os.path.join(os.getcwd(), 'templates', 'installer.txt')) as f:
+        with open (os.path.join(os.getcwd(), 'templates', 'windows_installer.txt')) as f:
             base = f.readlines()
-        base = remove_and_replace(base)
+        base = self.remove_and_replace(base)
         with open(os.path.join(self.project_root, 'scripts', 'installer.nsi'), 'w') as installer_file:
             installer_file.writelines(base)
+
+    def write_build_script_files(self):
+        with open (os.path.join(os.getcwd(), 'templates', 'cross_platform_build.txt')) as f:
+            build_script = f.readlines()
+        build_script = self.remove_and_replace(build_script)
+        with open(os.path.join(self.project_root, 'build.py'), 'w') as installer_file:
+            installer_file.writelines(build_script)
 
     def write_readme_file(self):
         file_contents = (
@@ -135,6 +131,7 @@ class ProjectGenerator(object):
         self.write_build_file()
         self.write_cmake_file()
         self.write_installer_file()
+        self.write_build_script_files()
         self.write_sample_source_file()
         return 0
 

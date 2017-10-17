@@ -18,6 +18,7 @@ class UnityGenerator(base.ProjectGenerator):
         self.template_name = 'unity.txt'
         self.template_keys['projname'] =  'Unity-Updater-Project'
         self.template_keys['appname'] =  'Unity-Application'
+        self.template_keys['proj_languages'] = 'NONE'
 
     def write_sample_source_file(self):
         if not os.path.isdir(os.path.join(self.project_root, 'unity')):
