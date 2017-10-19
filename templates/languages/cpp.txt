@@ -1,0 +1,16 @@
+## Unity CMake template       ##
+##                            ##
+## Part of Updater            ##
+##                            ##
+## @author Daniel J. Finnegan ##
+## @date September 2017       ##
+
+set (
+      SOURCE_FILES
+            "src/main.cpp"
+)
+
+add_executable (
+      main
+      ${SOURCE_FILES}
+)
