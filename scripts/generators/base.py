@@ -24,7 +24,7 @@ class ProjectGenerator(object):
            'version_number': '1.0',
             'author_name': 'Daniel J. Finnegan',
             'installer_name': 'My-Program-Installer',
-            'company_name': 'Lancophone',
+            'companyname': 'Lancophone',
             'install_description': '"Installs the application to your machine"'
         }
 
