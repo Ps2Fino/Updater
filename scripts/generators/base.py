@@ -9,6 +9,7 @@ from os import path
 import logging
 from logging import handlers
 import re
+import shutil
 
 class ProjectGenerator(object):
 
@@ -22,8 +23,9 @@ class ProjectGenerator(object):
         self.template_keys = {
            'version_number': '1.0',
             'author_name': 'Daniel J. Finnegan',
-            'insaller_name': 'My-Program',
-            'company_name': 'Lancophone'
+            'installer_name': 'My-Program-Installer',
+            'company_name': 'Lancophone',
+            'install_description': '"Installs the application to your machine"'
         }
 
     def remove_and_replace(self, lines):
@@ -37,10 +39,10 @@ class ProjectGenerator(object):
         return lines
 
     def write_cmake_file(self):
-        with open (os.path.join(os.getcwd(), 'templates', 'base.txt')) as f:
+        with open (os.path.join(os.getcwd(), 'templates', 'languages', 'base.txt')) as f:
             base = f.readlines()
         base = self.remove_and_replace(base)
-        with open (os.path.join(os.getcwd(), 'templates', self.template_name)) as f:
+        with open (os.path.join(os.getcwd(), 'templates', 'languages', self.template_name)) as f:
             lines = f.readlines()
         lines = self.remove_and_replace(lines)
         templ = base + lines
@@ -49,14 +51,19 @@ class ProjectGenerator(object):
 
     def write_installer_file(self):
         # Delete the header from the template file
-        with open (os.path.join(os.getcwd(), 'templates', 'windows_installer.txt')) as f:
+        with open (os.path.join(os.getcwd(), 'templates', 'installers', 'windows_installer.txt')) as f:
             base = f.readlines()
         base = self.remove_and_replace(base)
         with open(os.path.join(self.project_root, 'scripts', 'installer.nsi'), 'w') as installer_file:
             installer_file.writelines(base)
 
+        # Copy the license folder over
+        os.mkdir(os.path.join(self.project_root, 'licenses'))
+        shutil.copy(os.path.join(os.getcwd(), 'templates', 'licenses', 'BSD-3-license.txt'),
+                    os.path.join(self.project_root, 'licenses'))
+
     def write_build_script_files(self):
-        with open (os.path.join(os.getcwd(), 'templates', 'cross_platform_build.txt')) as f:
+        with open (os.path.join(os.getcwd(), 'templates', 'project-builders', 'cross_platform_build.txt')) as f:
             build_script = f.readlines()
         build_script = self.remove_and_replace(build_script)
         with open(os.path.join(self.project_root, 'build.py'), 'w') as installer_file:
