@@ -4,14 +4,14 @@
 # @author Daniel J. Finnegan
 # @date July 2017
 
-import base
+import base_gen
 import os
 from os import path
 import logging
 from logging import handlers
 import re
 
-class UnityGenerator(base.ProjectGenerator):
+class UnityGenerator(base_gen.ProjectGenerator):
 
     def __init__(self, proj_root):
         super(UnityGenerator, self).__init__(proj_root)

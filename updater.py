@@ -11,7 +11,6 @@ from logging import handlers
 import csv
 
 # Include the generators
-# sys.path.append(os.getcwd() + '/scripts/')
 from generators import *
 
 ## This file implements the project downloadeer.
@@ -263,7 +262,7 @@ class App(Tk):
             # elif self.generators_var.get() == '<insert_new_generator_here>':
             #     project_generator = <New>Generator(self.project_root_text.get())
             else:
-                project_generator = base.ProjectGenerator(self.project_root_text.get())
+                project_generator = base_gen.ProjectGenerator(self.project_root_text.get())
 
             self.log_message(message='Generating the project...')
             rc = project_generator.generate_project()
