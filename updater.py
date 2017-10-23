@@ -13,7 +13,7 @@ import csv
 # Include the generators
 sys.path.append(os.getcwd())
 print sys.path
-from generators import *
+from generators import base_gen
 
 ## This file implements the project downloadeer.
 ## It is used for pulling and building all of my software
