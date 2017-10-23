@@ -9,12 +9,11 @@ from os import path
 import logging
 from logging import handlers
 import re
+from generators import base_gen
 
 class UnityGenerator(base_gen.ProjectGenerator):
 
     def __init__(self, proj_root):
-        import generators.base_gen
-        
         super(UnityGenerator, self).__init__(proj_root)
         self.template_name = 'unity.txt'
         self.template_keys['projname'] =  'Unity-Updater-Project'

@@ -8,12 +8,11 @@ import os
 from os import path
 import logging
 from logging import handlers
+from generators import base_gen
 
 class CppGenerator(base_gen.ProjectGenerator):
 
     def __init__(self, proj_root):
-        import generators.base_gen
-        
         super(CppGenerator, self).__init__(proj_root)
         self.template_name = 'cpp.txt'
         self.template_keys['projname'] =  'C++-Updater-Project'
