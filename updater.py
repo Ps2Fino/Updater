@@ -11,7 +11,7 @@ from logging import handlers
 import csv
 
 # Include the generators
-sys.path.append(os.path.join(os.getcwd()), 'generators')
+sys.path.append(os.path.join(os.getcwd(), 'generators'))
 print sys.path
 from generators import *
 
