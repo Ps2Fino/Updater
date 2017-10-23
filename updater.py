@@ -160,7 +160,7 @@ class App(Tk):
 
         self.log_message('Building the software package...')
         sys.path.append(os.path.join(project_to_build_dir, 'scripts'))
-        os.chdir(os.path.join(project_to_build_dir, 'scripts'))
+        os.chdir(os.path.join(project_to_build_dir))
 
         # Import the build script as a python module and then build it
         # If no custom build operation is specified, then make a standard call to cmake
@@ -179,7 +179,7 @@ class App(Tk):
             else:
                 call(['cmake', '--build', '.'])
 
-        self.log_message('Project built!')
+        self.log_message('Check project directory for build output files.')
 
     def update_project(self):
         self.log_message(message='Updating the software package...')
