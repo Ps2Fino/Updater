@@ -11,9 +11,9 @@ from logging import handlers
 import csv
 
 # Include the generators
-sys.path.append(os.getcwd())
-print sys.path
-from generators import base_gen
+# sys.path.append(os.getcwd())
+# print sys.path
+from generators import *
 
 ## This file implements the project downloadeer.
 ## It is used for pulling and building all of my software

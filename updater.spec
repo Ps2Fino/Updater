@@ -2,9 +2,14 @@
 
 block_cipher = None
 
-
+# This is not ideal; I need to manually update this spec file for every new generator
 a = Analysis(['updater.py', 'updater.spec'],
-             hiddenimports=['argparse', 'shutil', 'subprocess'],
+             hiddenimports=['argparse', 
+                            'shutil', 
+                            'subprocess',
+                            'generators.base_gen',
+                            'generators.cpp',
+                            'generators.unity'],
              binaries=[],
              datas=[],
              hookspath=[],
