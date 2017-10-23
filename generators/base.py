@@ -88,7 +88,7 @@ class ProjectGenerator(object):
             'import os\n'
             'from subprocess import call\n'
             '\n'
-            'UPDATER_CMAKE_ARGS = [BUILD_INSTALLER=ON] # Required CMake arguments for Updater\n'
+            'UPDATER_CMAKE_ARGS = [\'-DBUILD_INSTALLER=ON\'] # Turn this on to build the installer\n'
             'UPDATER_BUILD_CUSTOM = True # Set this to True if your project has a custom build function\n'
             '\n'
             '# Default implementation just calls cmake\n'

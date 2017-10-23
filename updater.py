@@ -11,7 +11,7 @@ from logging import handlers
 import csv
 
 # Include the generators
-sys.path.append(os.getcwd() + '/scripts/')
+# sys.path.append(os.getcwd() + '/scripts/')
 from generators import *
 
 ## This file implements the project downloadeer.
@@ -131,15 +131,17 @@ class App(Tk):
     	self.directory_entry.grid(column=1, columnspan=2, row=2, sticky='EW')
     	self.set_directory_button.grid(column=3, row=2, sticky='EW')
 
-    	# Action button for updating
-    	self.update_button = Button(self.frame, text='Update', command=self.do_task)
-    	self.update_button.grid(column=0, row=3, sticky='EW')
-
         # Action button for creating
         self.create_button = Button(self.frame, text='Create', command=self.create_project)
         self.project_generators = OptionMenu(self.frame, self.generators_var, *self.generators)
-        self.create_button.grid(column=0, row=4, sticky='EW')
-        self.project_generators.grid(column=1, columnspan=2, row = 4, sticky='EW')
+        self.create_button.grid(column=0, row=3, sticky='EW')
+        self.project_generators.grid(column=1, columnspan=2, row = 3, sticky='EW')
+
+        # Action button for updating
+        self.build_button = Button(self.frame, text='Build', command=self.do_build_task)
+        self.build_button.grid(column=0, row=4, sticky='EW')
+        self.update_button = Button(self.frame, text='Update', command=self.do_task)
+        self.update_button.grid(column=1, row=4, columnspan=2, sticky='EW')
 
         # Text box for log output
         self.log = Text(self.frame, height=20, takefocus=0)
@@ -152,24 +154,25 @@ class App(Tk):
 
     	self.project_root_text.set(self.project_root)
 
-    def build_project(self):
-        self.log_message('Building the software package...')
-        os.chdir(self.project_root) # Move to the root of the directory
+    def build_project(self, project_to_build_dir=None):
+        if project_to_build_dir is None:
+            project_to_build_dir = self.project_root
 
-        self.log_message('Building the project...')
-        # sys.path.append(os.getcwd() + '/scripts/')
+        self.log_message('Building the software package...')
+        sys.path.append(os.path.join(project_to_build_dir, 'scripts'))
+        os.chdir(os.path.join(project_to_build_dir, 'scripts'))
 
         # Import the build script as a python module and then build it
         # If no custom build operation is specified, then make a standard call to cmake
         from builder import build_project
         if build_project.UPDATER_BUILD_CUSTOM:
-            build_project.build_full_package(self.project_root) # Pass in the root directory 
+            build_project.build_full_package(project_to_build_dir) # Pass in the root directory 
         else:
-            if os.path.isdir(os.path.join(self.project_root, 'bin')):
-                shutil.rmtree(os.path.join(self.project_root, 'bin'))
+            if os.path.isdir(os.path.join(project_to_build_dir, 'bin')):
+                shutil.rmtree(os.path.join(project_to_build_dir, 'bin'))
 
-            os.mkdir(os.path.join(self.project_root, 'bin'))
-            os.chdir(os.path.join(self.project_root, 'bin'))
+            os.mkdir(os.path.join(project_to_build_dir, 'bin'))
+            os.chdir(os.path.join(project_to_build_dir, 'bin'))
             rc = call(['cmake'] + build_project.UPDATER_CMAKE_ARGS + ['..'])
             if rc != 0:
                 self.log_message(message='Project is missing a CMakeLists.txt file. Contact the package maintainer')
@@ -216,12 +219,14 @@ class App(Tk):
             def update_in_thread():
                 self.update_button.config(state=DISABLED)
                 self.create_button.config(state=DISABLED)
+                self.build_button.config(state=DISABLED)
 
                 self.update_project()
                 self.build_project() # Pass in the project root folder
 
                 self.update_button.config(state=ACTIVE)
                 self.create_button.config(state=ACTIVE)
+                self.build_button.config(state=ACTIVE)
                 return
 
             thread = Thread(target=update_in_thread)
@@ -231,12 +236,14 @@ class App(Tk):
             def download_in_thread():
                 self.update_button.config(state=DISABLED)
                 self.create_button.config(state=DISABLED)
+                self.build_button.config(state=DISABLED)
 
                 self.download_project()
                 self.build_project()
 
                 self.update_button.config(state=ACTIVE)
                 self.create_button.config(state=ACTIVE)
+                self.build_button.config(state=ACTIVE)
                 return
 
             thread = Thread(target=download_in_thread)
@@ -247,7 +254,7 @@ class App(Tk):
         def create_in_thread():
             self.update_button.config(state=DISABLED)
             self.create_button.config(state=DISABLED)
-
+            self.build_button.config(state=DISABLED)
 
             if self.generators_var.get() == 'Unity':
                 project_generator = unity.UnityGenerator(self.project_root_text.get())
@@ -267,11 +274,28 @@ class App(Tk):
 
             self.update_button.config(state=ACTIVE)
             self.create_button.config(state=ACTIVE)
+            self.build_button.config(state=ACTIVE)
 
         thread = Thread(target=create_in_thread)
         thread.start()
         return thread
 
+    def do_build_task(self):
+        def create_in_thread():
+            self.update_button.config(state=DISABLED)
+            self.create_button.config(state=DISABLED)
+            self.build_button.config(state=DISABLED)
+
+            print 'Building the project at', self.project_root_text.get()
+            self.build_project(self.project_root_text.get()) # Pass in the project root folder
+
+            self.update_button.config(state=ACTIVE)
+            self.create_button.config(state=ACTIVE)
+            self.build_button.config(state=ACTIVE)
+
+        thread = Thread(target=create_in_thread)
+        thread.start()
+        return thread
 
     def log_message(self, message=''):
         self.logger.info(message) # Log to the logger too

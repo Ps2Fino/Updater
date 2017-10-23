@@ -29,7 +29,6 @@ set (
 option (
 	BUILD_INSTALLER
 		"Build the project installer (requires NSIS in the PATH variable)"
-		ON
 )
 
 if (BUILD_INSTALLER)

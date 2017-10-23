@@ -16,6 +16,7 @@ The fix for this is to actually just use py2app instead, which seems to create a
 Instructions for using py2app are available [here](https://py2app.readthedocs.io/en/latest/tutorial.html#create-a-setup-py-file)
 Yet another issue is the recursive nature of updater; currently updater cannot be used to build itself.
 This is likely an issue with paths, namely the binary not having the relevant directories in its own path at the build time of updater.
+There is also an issue with building Updater configured projects. Due to issues between the sys.path variable in python and Updater's implementation, it is currently only possible to build one project at a time. To build another project, quit Updater and restart it again specifying the directory of the other project.
 
 ## Missing features
 - A HTTP service for querying available projects hosted on github.bath.ac.uk
