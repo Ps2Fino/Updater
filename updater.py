@@ -11,7 +11,8 @@ from logging import handlers
 import csv
 
 # Include the generators
-sys.path.append(os.path.join(os.getcwd()))
+sys.path.append(os.path.join(os.getcwd()), 'generators')
+print sys.path
 from generators import *
 
 ## This file implements the project downloadeer.
