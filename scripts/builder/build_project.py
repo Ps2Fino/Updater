@@ -18,7 +18,7 @@ def build_full_package(project_root):
 	if sys.platform == 'darwin': # Use py2app on OSX
 		call(['python', 'setup.py', 'py2app'])
 	else:
-		call(['pyinstaller', 'updater.spec']) # Use pyinstaller on Windows
+		call(['pyinstaller', '--additional-hooks-dir=pyhooks', 'updater.spec']) # Use pyinstaller on Windows
 
 #######################################################
 
