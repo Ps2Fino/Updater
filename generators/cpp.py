@@ -4,7 +4,6 @@
 # @author Daniel J. Finnegan
 # @date September 2017
 
-import base_gen
 import os
 from os import path
 import logging
