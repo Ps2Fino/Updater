@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['updater.py', 'updater.spec'],
-             hiddenimports=['argparse', 'shutil', 'subprocess'],
+             hiddenimports=['argparse', 'shutil', 'subprocess', 'generators'],
              binaries=[],
              datas=[],
              hookspath=[],
