@@ -1,9 +1,9 @@
-## Unity CMake template       ##
+## LaTeX CMake template       ##
 ##                            ##
 ## Part of Updater            ##
 ##                            ##
 ## @author Daniel J. Finnegan ##
-## @date September 2017       ##
+## @date April 2018           ##
 
 # Find the essential package
 find_package (
