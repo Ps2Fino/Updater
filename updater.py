@@ -48,7 +48,7 @@ class App(Tk):
         self.project_titles = sorted(self.project_table.keys()) # Get a sorted list of the keys
 
         self.branches = ['master', 'testing']
-        self.generators = ['Unity', 'C++']
+        self.generators = ['Unity', 'C++', 'LaTeX']
         
         if sys.platform == 'darwin':
             self.project_root = '/home/'
@@ -261,6 +261,8 @@ class App(Tk):
                 project_generator = unity.UnityGenerator(self.project_root_text.get())
             elif self.generators_var.get() == 'C++':
                 project_generator = cpp.CppGenerator(self.project_root_text.get())
+            elif self.generators_var.get() == 'LaTeX':
+                project_generator = latex.LatexGenerator(self.project_root_text.get())
             # elif self.generators_var.get() == '<insert_new_generator_here>':
             #     project_generator = <New>Generator(self.project_root_text.get())
             else:

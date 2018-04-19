@@ -5,5 +5,6 @@
 __all__ = [
 'base_gen',
 'cpp',
-'unity'
+'unity',
+'latex'
 ]
