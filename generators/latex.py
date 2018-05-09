@@ -7,7 +7,7 @@ import os
 from os import path
 import logging
 from logging import handlers
-from generators import base_gen
+import base_gen
 
 class LatexGenerator(base_gen.ProjectGenerator):
 

@@ -1,6 +1,10 @@
 # Updater
 A build utility/package manager that presents a GUI for easy, cross platform installation of my software
 
+# Adding new templates
+Whenever you add a new template to the engine, be sure to update the `hiddenimports` list in the `Analysis` list in the `updater.spec` file.
+You also need to modify `pyhooks/hook-generators.base_gen.py` and of course, the `__init__.py` file in the generators pacakge.
+
 ## Dependencies
 - Pyinstaller
 - py2app
