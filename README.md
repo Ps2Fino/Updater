@@ -1,5 +1,5 @@
 # Updater
-A build utility/package manager that presents a GUI for easy, cross platform installation of my software
+A build utility/package manager that presents a GUI for easy, cross platform installation of my software.
 
 # Adding new templates
 Whenever you add a new template to the engine, be sure to update the `hiddenimports` list in the `Analysis` list in the `updater.spec` file.
@@ -10,6 +10,12 @@ You also need to modify `pyhooks/hook-generators.base_gen.py` and of course, the
 - py2app
 - Tkinter
 - Python 2.7
+
+## Includes
+The Windows build of Updater includes pre-built binaries of git and cmake for installation.
+However, as these are quite old, I would recommend users to install later versions of git and cmake separately rather than relying on me to update them over time.
+One important thing to keep in mind: *make sure git and cmake are added to the PATH variable on Windows!*.
+Otherwise, Updater won't be able to call them.
 
 ## Known issues
 I recommend installing python from the official python distribution.
