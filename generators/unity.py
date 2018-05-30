@@ -9,7 +9,7 @@ from os import path
 import logging
 from logging import handlers
 import re
-from generators import base_gen
+import base_gen
 
 class UnityGenerator(base_gen.ProjectGenerator):
 
