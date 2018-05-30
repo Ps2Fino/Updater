@@ -3,7 +3,7 @@ Updater is a template engine: when you execute its operation on a directory on y
 These files and direectory structure are configured to enable Updater to build the project with one click!
 
 I use it to create project templates for all my students at the [University of Bath](www.bath.ac.uk).
-If you use it and find it helpful, please send me an email and write a message on the wiki.
+If you use it and find it helpful, please [write a testimonial](/wiki/User-Testimonials) on the wiki.
 
 # Adding new templates
 Whenever you add a new template to the engine, be sure to update the `hiddenimports` list in the `Analysis` list in the `updater.spec` file.
