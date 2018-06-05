@@ -18,6 +18,7 @@ class CppGenerator(base_gen.ProjectGenerator):
         self.template_keys['projname'] =  'C++-Updater-Project'
         self.template_keys['appname'] =  'DanDan\'s-Application'
         self.template_keys['proj_languages'] = 'CXX'
+        self.cmake_module_files = ['Findfftw.cmake', 'FindFMOD.cmake', 'Findlibsndfile.cmake']
 
     def write_sample_source_file(self):
         os.mkdir(os.path.join(self.project_root, 'src'))
