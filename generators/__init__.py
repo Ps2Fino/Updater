@@ -5,5 +5,6 @@
 __all__ = [
 'cpp',
 'unity',
-'latex'
+'latex',
+'r',
 ]

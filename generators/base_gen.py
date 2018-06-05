@@ -27,6 +27,7 @@ class ProjectGenerator(object):
             'companyname': 'Lancophone',
             'install_description': '"Installs the application to your machine"'
         }
+        self.cmake_module_files = []
 
     def remove_and_replace(self, lines):
         del lines[0:7]
@@ -109,6 +110,9 @@ class ProjectGenerator(object):
     def write_sample_source_file(self):
         pass
 
+    def copy_generator_specific_files(self):
+        pass
+
     def write_init_file(self):
         file_contents = (
             '# __init__ file for module\n'
@@ -119,6 +123,13 @@ class ProjectGenerator(object):
 
         with open(os.path.join(self.project_root, 'scripts', 'builder', '__init__.py'), 'w') as init_module:
             init_module.write(file_contents)
+
+    def copy_module_files(self):
+        for module in self.cmake_module_files:
+            with open(os.path.join(os.getcwd(), 'templates', 'cmake-modules', module), 'r') as input_f:
+                input_data = input_f.readlines()
+            with open(os.path.join(self.project_root, 'cmake', module), 'w') as output_f:
+                output_f.writelines(input_data)
 
     def generate_project(self):
         if os.path.isdir(self.project_root):
@@ -131,6 +142,7 @@ class ProjectGenerator(object):
         # Go ahead and create the scripts folder
         os.mkdir(os.path.join(self.project_root, 'scripts'))
         os.mkdir(os.path.join(self.project_root, 'scripts', 'builder'))
+        os.mkdir(os.path.join(self.project_root, 'cmake'))
 
         # Go ahead and write all the files to the directory
         self.write_init_file()
@@ -140,6 +152,8 @@ class ProjectGenerator(object):
         self.write_installer_file()
         self.write_build_script_files()
         self.write_sample_source_file()
+        self.copy_module_files()
+        self.copy_generator_specific_files()
         return 0
 
 ###########################################################
