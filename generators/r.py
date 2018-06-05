@@ -27,12 +27,20 @@ class RGenerator(base_gen.ProjectGenerator):
             '%% @author ' + self.template_keys['author_name'] + '\n'
             '%%\n'
             '\n'
-            '\\documentclass{article}\n'
-            '\n'
-            '\\begin{document}\n'
-            'Hello World\n'
-            '\\end{document}\n'
-        )
+            '---\n'
+            'title: "' + self.template_keys['projname'] + '"\n'
+            'output:\n'
+            '\thtml_notebook: default\n'
+            '\tpdf_document: default\n'
+            '---\n\n'
+            '```{r, warnings=FALSE}\n'
+            'library (\'rmarkdown\');\n'
+            'library (\'dplyr\');\n'
+            'library (\'ggplot2\');\n'
+            'library (\'reshape2\');\n'
+            '```\n\n'
+            'To begin...'
+            )
 
-        with open(os.path.join(self.project_root, 'src', 'main.tex'), 'w') as sample_source:
+        with open(os.path.join(self.project_root, 'src', 'main.Rmd'), 'w') as sample_source:
             sample_source.write(file_contents)
