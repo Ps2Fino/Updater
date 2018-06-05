@@ -123,8 +123,10 @@ class ProjectGenerator(object):
 
     def copy_module_files(self):
         for module in self.cmake_module_files:
-            shutil.copyfile(os.path.join(os.getcwd(), 'templates', 'cmake-modules', module), 
-                os.path.join(self.project_root, 'cmake'))
+            with open(os.path.join(os.getcwd(), 'templates', 'cmake-modules', module), 'r') as input_f:
+                input_data = input_f.readlines()
+            with open(os.path.join(self.project_root, 'cmake', module), 'w') as output_f:
+                output_f.writelines(input_data)
 
     def generate_project(self):
         if os.path.isdir(self.project_root):
