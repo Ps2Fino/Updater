@@ -107,6 +107,13 @@ class ProjectGenerator(object):
         with open(os.path.join(self.project_root, 'scripts', 'builder', 'build_project.py'), 'w') as build_module:
             build_module.write(file_contents)
 
+        # Save a handy little batch file for Windows projects
+        file_contents = (
+            '@python build.py\n'
+        )
+        with open(os.path.join(self.project_root, 'make.bat'), 'w') as build_module:
+            build_module.write(file_contents)
+
     def write_sample_source_file(self):
         pass
 
