@@ -110,6 +110,9 @@ class ProjectGenerator(object):
     def write_sample_source_file(self):
         pass
 
+    def copy_generator_specific_files(self):
+        pass
+
     def write_init_file(self):
         file_contents = (
             '# __init__ file for module\n'
@@ -150,6 +153,7 @@ class ProjectGenerator(object):
         self.write_build_script_files()
         self.write_sample_source_file()
         self.copy_module_files()
+        self.copy_generator_specific_files()
         return 0
 
 ###########################################################
