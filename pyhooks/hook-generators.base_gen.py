@@ -5,4 +5,5 @@ hiddenimports = [
     "generators.unity",
     "generators.cpp",
     "generators.latex",
+    "generators.r",
 ]
