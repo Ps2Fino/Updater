@@ -4,7 +4,7 @@
 # @author Daniel J. Finnegan
 # @date September 2017
 
-import os
+import os, sys
 from os import path
 import logging
 from logging import handlers
@@ -138,6 +138,22 @@ class ProjectGenerator(object):
             with open(os.path.join(self.project_root, 'cmake', module), 'w') as output_f:
                 output_f.writelines(input_data)
 
+    def write_make_file(self):
+        if sys.platform == 'darwin':
+            file_contents = (
+                'all:\n'
+                '\t@python build.py\n'
+            )
+            file_name = 'Makefile'
+        else:
+            file_contents = (
+                '@python build.py'
+            )
+            file_name = 'make.bat'
+
+        with open(os.path.join(self.project_root, file_name), 'w') as make_file:
+            make_file.write(file_contents)
+
     def generate_project(self):
         if os.path.isdir(self.project_root):
             if os.path.isfile(os.path.join(self.project_root, 'CMakeLists.txt')):
@@ -161,6 +177,7 @@ class ProjectGenerator(object):
         self.write_sample_source_file()
         self.copy_module_files()
         self.copy_generator_specific_files()
+        self.write_make_file()
         return 0
 
 ###########################################################
