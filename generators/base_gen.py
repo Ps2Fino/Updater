@@ -95,12 +95,12 @@ class ProjectGenerator(object):
             '# Default implementation just calls cmake\n'
             '# Reimplement as you see fit\n'
             'def build_full_package(project_root):\n'
-            '\tif not os.path.isdir(os.path.join(project_root, \'bin\')):\n'
-            '\t\tos.mkdir(os.path.join(project_root, \'bin\'))\n'
+            '    if not os.path.isdir(os.path.join(project_root, \'bin\')):\n'
+            '        os.mkdir(os.path.join(project_root, \'bin\'))\n'
             '\n'
-            '\tos.chdir(os.path.join(project_root, \'bin\'))\n'
-            '\tcall([\'cmake\'] + UPDATER_CMAKE_ARGS + [\'..\'])\n'
-            '\tcall([\'cmake\', \'--build\', \'.\'])\n'
+            '    os.chdir(os.path.join(project_root, \'bin\'))\n'
+            '    call([\'cmake\'] + UPDATER_CMAKE_ARGS + [\'..\'])\n'
+            '    call([\'cmake\', \'--build\', \'.\'])\n'
             '\n####################################################################\n'
         )
 
@@ -142,7 +142,7 @@ class ProjectGenerator(object):
         if sys.platform == 'darwin':
             file_contents = (
                 'all:\n'
-                '\t@python build.py\n'
+                '    @python build.py\n'
             )
             file_name = 'Makefile'
         else:

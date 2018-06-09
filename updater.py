@@ -26,7 +26,7 @@ from generators import *
 class App(Tk):
 
     def __init__(self, master):
-    	self.frame = Frame(master, height=640, width=480)
+        self.frame = Frame(master, height=640, width=480)
         self.menu = Menu(master)
 
         if sys.platform == 'darwin':
@@ -34,14 +34,14 @@ class App(Tk):
             self.menu.add_cascade(menu=self.appmenu)
             self.appmenu.add_command(label='About Updater')
 
-    	self.initialize()
+        self.initialize()
 
     def initialize(self):
-    	self.frame.grid()
-    	self.init_vars()
-    	self.init_controls()
+        self.frame.grid()
+        self.init_vars()
+        self.init_controls()
         self.init_menu()
-    	self.init_gui()
+        self.init_gui()
 
     def init_vars(self):
         self.project_table = {'': ''} # Empty table
@@ -67,11 +67,11 @@ class App(Tk):
         self.logger.setLevel(logging.INFO)
 
     def init_controls(self):
-    	self.project_root_text = StringVar()
-    	self.project_root_text.set(self.project_root)
+        self.project_root_text = StringVar()
+        self.project_root_text.set(self.project_root)
 
-    	self.project_titles_var = StringVar()
-    	self.project_titles_var.set(self.project_titles[0])
+        self.project_titles_var = StringVar()
+        self.project_titles_var.set(self.project_titles[0])
 
         self.branches_var = StringVar()
         self.branches_var.set(self.branches[0])
@@ -111,11 +111,11 @@ class App(Tk):
             menu.add_command(label=project, command=lambda title=project: self.project_titles_var.set(title))
 
     def init_gui(self):
-    	# Option box for selecting the project to install
+        # Option box for selecting the project to install
         self.project_label = Label(self.frame, text='Project to Install or Update:')
         self.projects_options = OptionMenu(self.frame, self.project_titles_var, '')
-    	self.project_label.grid(column=0, row=0, sticky='W')
-    	self.projects_options.grid(column=1, columnspan=3, row = 0, sticky='W')
+        self.project_label.grid(column=0, row=0, sticky='W')
+        self.projects_options.grid(column=1, columnspan=3, row = 0, sticky='W')
 
         # Option box for selecting the project to install
         self.branch_label = Label(self.frame, text='Branch to Install or Update:')
@@ -123,14 +123,14 @@ class App(Tk):
         self.branch_label.grid(column=0, row=1, sticky='W')
         self.project_branches.grid(column=1, columnspan=3, row = 1, sticky='W')
 
-    	# Entry for specifying the directory to install the project
-    	# Complete with side label and action button
-    	self.directory_label = Label(self.frame, text='Project Directory to Install or Update:')
-    	self.directory_entry = Entry(self.frame, textvariable=self.project_root_text, width=50)
-    	self.set_directory_button = Button(self.frame, text="Set Directory", command=self.find_dir)
-    	self.directory_label.grid(column=0, row=2, sticky='EW')
-    	self.directory_entry.grid(column=1, columnspan=2, row=2, sticky='EW')
-    	self.set_directory_button.grid(column=3, row=2, sticky='EW')
+        # Entry for specifying the directory to install the project
+        # Complete with side label and action button
+        self.directory_label = Label(self.frame, text='Project Directory to Install or Update:')
+        self.directory_entry = Entry(self.frame, textvariable=self.project_root_text, width=50)
+        self.set_directory_button = Button(self.frame, text="Set Directory", command=self.find_dir)
+        self.directory_label.grid(column=0, row=2, sticky='EW')
+        self.directory_entry.grid(column=1, columnspan=2, row=2, sticky='EW')
+        self.set_directory_button.grid(column=3, row=2, sticky='EW')
 
         # Action button for creating
         self.create_button = Button(self.frame, text='Create', command=self.create_project)
@@ -149,11 +149,11 @@ class App(Tk):
         self.log.grid(column=0, columnspan=4, row=5, sticky='EW')
 
     def find_dir(self):
-    	self.project_root = tkFileDialog.askdirectory()
-    	if self.project_root is None:
+        self.project_root = tkFileDialog.askdirectory()
+        if self.project_root is None:
             return
 
-    	self.project_root_text.set(self.project_root)
+        self.project_root_text.set(self.project_root)
 
     def build_project(self, project_to_build_dir=None):
         if project_to_build_dir is None:
@@ -215,8 +215,8 @@ class App(Tk):
             self.log_message(message='Platform unsupported. Aborting')
             return
 
-    	rc = call(['git', '-C', self.project_root, 'status']) # Run git status
-    	if rc == 0:
+        rc = call(['git', '-C', self.project_root, 'status']) # Run git status
+        if rc == 0:
             def update_in_thread():
                 self.update_button.config(state=DISABLED)
                 self.create_button.config(state=DISABLED)
@@ -233,7 +233,7 @@ class App(Tk):
             thread = Thread(target=update_in_thread)
             thread.start()
             return thread
-    	else:
+        else:
             def download_in_thread():
                 self.update_button.config(state=DISABLED)
                 self.create_button.config(state=DISABLED)
@@ -304,14 +304,14 @@ class App(Tk):
 
     def log_message(self, message=''):
         self.logger.info(message) # Log to the logger too
-    	self.log.insert(INSERT, message)
+        self.log.insert(INSERT, message)
         self.log.insert(INSERT, '\n')
-    	self.log.see(END)
+        self.log.see(END)
 
 if __name__ == '__main__':
-	root = Tk()
-	root.title('Experiment Updater')
+    root = Tk()
+    root.title('Experiment Updater')
     # root.title('Experiment Updater (Testing branch)')
-	app = App(root)
-	root.mainloop()
-	# root.destroy()
+    app = App(root)
+    root.mainloop()
+    # root.destroy()
