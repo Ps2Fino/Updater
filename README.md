@@ -20,6 +20,8 @@ The Windows build of Updater includes pre-built binaries of git and cmake for in
 However, as these are quite old, I would recommend users to install later versions of git and cmake separately rather than relying on me to update them over time.
 One important thing to keep in mind: *make sure git and cmake are added to the PATH variable on Windows!*.
 Otherwise, Updater won't be able to call them.
+The Windows installer is built with [NSIS](http://nsis.sourceforge.net/Main%5FPage).
+The source code is in the [updater-installer](https://github.com/Ps2Fino/Updater-Installer) repository.
 
 ## Known issues
 I recommend installing python from the official python distribution.
