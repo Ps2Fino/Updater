@@ -3,7 +3,7 @@
 block_cipher = None
 
 # This is not ideal; I need to manually update this spec file for every new generator
-a = Analysis(['updater.py', 'updater.spec'],
+a = Analysis(['qt_test.py', 'updater.spec'],
              hiddenimports=['argparse', 
                             'shutil', 
                             'subprocess',
