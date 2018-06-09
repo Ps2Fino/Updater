@@ -291,7 +291,7 @@ class App(Tk):
             self.create_button.config(state=DISABLED)
             self.build_button.config(state=DISABLED)
 
-            print 'Building the project at', self.project_root_text.get()
+            print ('Building the project at', self.project_root_text.get())
             self.build_project(self.project_root_text.get()) # Pass in the project root folder
 
             self.update_button.config(state=ACTIVE)
