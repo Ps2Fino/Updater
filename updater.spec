@@ -6,6 +6,8 @@ block_cipher = None
 a = Analysis(['updater.spec'],
              hiddenimports=['argparse',
                             'tkinter',
+                            'tkinter.filedialog',
+                            'tkinter.messagebox',
                             'shutil', 
                             'subprocess',
                             'generators.base_gen',
