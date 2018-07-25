@@ -3,6 +3,7 @@
 # @date September 2017
 
 __all__ = [
+'base_gen',
 'cpp',
 'unity',
 'latex',

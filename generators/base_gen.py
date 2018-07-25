@@ -32,7 +32,8 @@ class ProjectGenerator(object):
     def remove_and_replace(self, lines):
         del lines[0:7]
         def replace_key_vals(match):
-            for key, value in self.template_keys.iteritems():
+#            for key, value in self.template_keys.iteritems():
+            for (key, value) in self.template_keys.items():
                 if key in match.string:
                     return value
         regex = re.compile(r">>>>>{(\w+)}")

@@ -8,7 +8,7 @@ import os
 from os import path
 import logging
 from logging import handlers
-import base_gen
+import generators.base_gen as base_gen
 
 class CppGenerator(base_gen.ProjectGenerator):
 
