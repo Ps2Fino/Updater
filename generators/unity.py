@@ -37,12 +37,13 @@ class UnityGenerator(base_gen.ProjectGenerator):
 
     def copy_generator_specific_files(self):
         # The unity generator uses the custom editor file for grabbing the unity version
-        os.mkdir(os.path.join(self.project_root, 'unity', 'Assets'))
-        os.mkdir(os.path.join(self.project_root, 'unity', 'Assets', 'Editor'))
-
-        with open(os.path.join(os.getcwd(), 'templates', 'languages', 'unity', 'GetUnityVersion.cs'), 'r') as input_f:
-            input_data = input_f.readlines()
-        with open(os.path.join(self.project_root, 'unity', 'Assets', 'Editor', 'GetUnityVersion.cs'), 'w') as output_f:
-            output_f.writelines(input_data)
+#        os.mkdir(os.path.join(self.project_root, 'unity', 'Assets'))
+#        os.mkdir(os.path.join(self.project_root, 'unity', 'Assets', 'Editor'))
+#
+#        with open(os.path.join(os.getcwd(), 'templates', 'languages', 'unity', 'GetUnityVersion.cs'), 'r') as input_f:
+#            input_data = input_f.readlines()
+#        with open(os.path.join(self.project_root, 'unity', 'Assets', 'Editor', 'GetUnityVersion.cs'), 'w') as output_f:
+#            output_f.writelines(input_data)
+        pass # This is no longer needed as the new cmake module simply checks the registry
 
 ###########################################################
