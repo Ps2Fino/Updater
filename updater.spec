@@ -3,8 +3,12 @@
 block_cipher = None
 
 # This is not ideal; I need to manually update this spec file for every new generator
-a = Analysis(['updater.py', 'updater.spec'],
-             hiddenimports=['argparse', 
+a = Analysis(['updater.spec'],
+             hiddenimports=['argparse',
+                            'tkinter',
+                            'tkinter.filedialog',
+                            'tkinter.messagebox',
+                            'csv',
                             'shutil', 
                             'subprocess',
                             'generators.base_gen',
