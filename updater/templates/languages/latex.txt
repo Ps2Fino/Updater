@@ -1,0 +1,132 @@
+## LaTeX CMake template       ##
+##                            ##
+## Part of Updater            ##
+##                            ##
+## @author Daniel J. Finnegan ##
+## @date April 2018           ##
+
+# Find the essential package
+find_package (
+	LATEX
+	COMPONENTS
+		PDFLATEX
+		BIBTEX
+)
+
+# Set and create a directory for dumping output files to
+set (
+	OUTPUT_DIR
+		output
+)
+
+if (NOT EXISTS src/${OUTPUT_DIR})
+
+	file (
+		MAKE_DIRECTORY
+			src/${OUTPUT_DIR}
+	)
+
+endif ()
+
+
+# Set a name for the main file; this should actually be the same as the main input tex file
+set (
+	SOURCE_FILE
+		main
+)
+
+# Simply do a pdflatex pass, followed by a bibtex pass, followed by two more pdflatex passes
+add_custom_target (
+	main_first_pass
+	ALL
+	COMMAND
+		${PDFLATEX_COMPILER} --output-directory ${OUTPUT_DIR} ${SOURCE_FILE}.tex
+	WORKING_DIRECTORY
+		${CMAKE_SOURCE_DIR}/src
+	COMMENT
+		"Executing the first pdflatex pass..."
+	VERBATIM
+)
+
+# Check to see if we need to create a bibliography
+file (
+	GLOB
+	bib_files
+	src/*.bib
+)
+
+if (bib_files)
+
+	add_custom_target (
+		bibliography
+		COMMAND
+			${BIBTEX_COMPILER} "${OUTPUT_DIR}/${SOURCE_FILE}.aux"
+		WORKING_DIRECTORY
+			${CMAKE_SOURCE_DIR}/src
+		COMMENT
+			"Generating the bibliography..."
+		VERBATIM
+	)
+
+	add_custom_command (
+		TARGET
+			bibliography
+		POST_BUILD
+		COMMAND
+			${PDFLATEX_COMPILER} --output-directory ${OUTPUT_DIR} ${SOURCE_FILE}.tex
+		COMMAND
+			${PDFLATEX_COMPILER} --output-directory ${OUTPUT_DIR} ${SOURCE_FILE}.tex
+		WORKING_DIRECTORY
+			${CMAKE_SOURCE_DIR}/src
+		COMMENT
+			"Executing the remaining pdflatex passes..."
+	)
+
+	add_dependencies (
+		bibliography
+			main_first_pass
+	)
+
+	# Cleanup just involves deleting the output directory and placing the pdf into the bin directory
+	add_custom_target (
+		make_pdf
+		ALL
+		COMMAND
+			${CMAKE_COMMAND} -E copy ${OUTPUT_DIR}/${SOURCE_FILE}.pdf ${CMAKE_BINARY_DIR}
+		COMMAND
+			${CMAKE_COMMAND} -E remove_directory ${OUTPUT_DIR}
+		WORKING_DIRECTORY
+			${CMAKE_SOURCE_DIR}/src
+		COMMENT
+			"Cleaning up and packaging the pdf into the output directory..."
+		VERBATIM
+	)
+
+	add_dependencies (
+		make_pdf
+			bibliography
+	)
+
+else ()
+
+	# Cleanup just involves deleting the output directory and placing the pdf into the bin directory
+	add_custom_target (
+		make_pdf
+		ALL
+		COMMAND
+			${CMAKE_COMMAND} -E copy ${OUTPUT_DIR}/${SOURCE_FILE}.pdf ${CMAKE_BINARY_DIR}
+		COMMAND
+			${CMAKE_COMMAND} -E remove_directory ${OUTPUT_DIR}
+		WORKING_DIRECTORY
+			${CMAKE_SOURCE_DIR}/src
+		COMMENT
+			"Cleaning up and packaging the pdf into the output directory..."
+		VERBATIM
+	)
+
+	add_dependencies (
+		make_pdf
+			main_first_pass
+	)
+
+endif ()

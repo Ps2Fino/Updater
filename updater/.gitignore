@@ -5,6 +5,7 @@ __pycache__/
 
 # Local stuff
 *.txt
+!templates/**/*.txt
 
 # C extensions
 *.so
