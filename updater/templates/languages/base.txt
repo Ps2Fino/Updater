@@ -26,6 +26,11 @@ set (
 		>>>>>{appname}
 )
 
+set (
+	AUTO_PRODUCT_NOTE
+		">>>>>{appnote}"
+)
+
 option (
 	BUILD_INSTALLER
 		"Build the project installer (requires NSIS in the PATH variable)"
@@ -53,6 +58,7 @@ add_custom_target (
 		"C:/Program Files (x86)/NSIS/makensis.exe"
 		"/XOutFile ${CMAKE_SOURCE_DIR}/build/${AUTO_APP_NAME}_v${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}-Installer.exe"
 		"/X!define PRODUCT_NAME ${AUTO_APP_NAME}"
+		"/X!define PRODUCT_NOTE '${AUTO_PRODUCT_NOTE}'"
 		"/X!define COMPANY_NAME ${COMPANY_NAME}"
 		"/X!define UNINSTALLER_NAME ${AUTO_APP_NAME}-Uninstaller"
 		"/X!define PRODUCT_ROOT_DIR ${CMAKE_SOURCE_DIR}"

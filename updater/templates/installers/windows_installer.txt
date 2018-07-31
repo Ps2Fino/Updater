@@ -95,7 +95,7 @@ Section "Install ${PRODUCT_NAME}" app_install
 
 	# Write registry keys for uninstallation and Add/Remove Control Panel access
 	WriteRegStr ${REGHKEY} "${REGPATH_UNINSTALL}\${REGUNINSTKEY}" \
-	"DisplayName" "${PRODUCT_NAME} -- Installs the Updater Program"
+	"DisplayName" "${PRODUCT_NAME} -- ${PRODUCT_NOTE}"
 	WriteRegStr ${REGHKEY} "${REGPATH_UNINSTALL}\${REGUNINSTKEY}" \
 	"InstallLocation" "$\"$INSTDIR$\""
 	WriteRegStr ${REGHKEY} "${REGPATH_UNINSTALL}\${REGUNINSTKEY}" \

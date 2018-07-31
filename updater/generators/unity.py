@@ -18,6 +18,7 @@ class UnityGenerator(base_gen.ProjectGenerator):
         self.template_name = 'unity.txt'
         self.template_keys['projname'] =  'Unity-Updater-Project'
         self.template_keys['appname'] =  'Unity-Application'
+        self.template_keys['appnote'] =  'An updater-generated Unity Application'
         self.template_keys['proj_languages'] = 'NONE'
         self.cmake_module_files = ['FindUnityGame.cmake']
 
