@@ -10,7 +10,7 @@ cmake_policy (SET CMP0048 NEW)
 project (
 	Updater
 	VERSION
-		1.5.1
+		1.5.2
 	LANGUAGES
 		NONE
 )
