@@ -17,6 +17,7 @@ import csv
 #sys.path.append(os.getcwd())
 # print sys.path
 from generators import *
+import generators
 
 ## This file implements the project downloadeer.
 ## It is used for pulling and building all of my software
@@ -51,7 +52,8 @@ class App(tk.Tk):
 		self.project_titles = sorted(self.project_table.keys()) # Get a sorted list of the keys
 
 		self.branches = ['master', 'testing']
-		self.generators = ['Unity', 'C++', 'LaTeX', 'R']
+		# self.generators = ['Unity', 'C++', 'LaTeX', 'R']
+		self.generators = generators.Generators
 		
 		if sys.platform == 'darwin':
 			self.project_root = '/home/'
@@ -260,18 +262,8 @@ class App(tk.Tk):
 			self.create_button.config(state=tk.DISABLED)
 			self.build_button.config(state=tk.DISABLED)
 
-			if self.generators_var.get() == 'Unity':
-				project_generator = unity.UnityGenerator(self.project_root_text.get())
-			elif self.generators_var.get() == 'C++':
-				project_generator = cpp.CppGenerator(self.project_root_text.get())
-			elif self.generators_var.get() == 'LaTeX':
-				project_generator = latex.LatexGenerator(self.project_root_text.get())
-			elif self.generators_var.get() == 'R':
-				project_generator = r.RGenerator(self.project_root_text.get())
-			# elif self.generators_var.get() == '<insert_new_generator_here>':
-			#     project_generator = <New>Generator(self.project_root_text.get())
-			else:
-				project_generator = base_gen.ProjectGenerator(self.project_root_text.get())
+			# Load the generator based on name
+			project_generator = generators.load_generator(self.generators_var.get(), self.project_root_text.get())
 
 			self.log_message(message='Generating the project...')
 			rc = project_generator.generate_project()
